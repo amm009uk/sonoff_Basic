@@ -1,4 +1,4 @@
-//#define SERIAL_DEBUG                                                 // Comment this to disable debugging
+#define SERIAL_DEBUG                                                 // Comment this to disable debugging
 #define SERIAL_DELAY          000                                    // Delay for Serial.println to be able read
 #define LED_PIN								13																		 // LED indicator
 #define RELAY_PIN							12																		 // Relay for power switch
