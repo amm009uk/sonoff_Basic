@@ -5,50 +5,77 @@
 -------------------------------------------------------------------------------------------------------------
 ## Features
 
-- Custom firmware to take greater control and integrate with an MQTT Broker. The Broker would typically integrate with your Home Automation system.
+- Custom firmware to take greater control and integrate with an MQTT Broker. The Broker would typically integrate with your Home Automation system
 
-- Device will respond to an MQTT message, onboard toggle and a switch on GPIO-14 if connected.
+- Device will respond to an MQTT message, onboard toggle and a switch on GPIO-14 if connected
 
-- WiFi or MQTT drop outs are handled automatically.
+- WiFi or MQTT drop outs are handled automatically
 
-- You can set a periodic reboot option to keep things fresh.
+- You can set a periodic reboot option to keep things fresh
+
+
 
 -------------------------------------------------------------------------------------------------------------
 ## Version
-1.4 Initial testing completed.
+1.0 Initial version  
+1.1 Testing completed  
+1.2 Updated README  
+1.3 Added IP lookup  
+1.4 Added over the air serial output with Telnet (RemoteDebug library)  
 
 -------------------------------------------------------------------------------------------------------------
-## Setup device
-1. Flash SPIFFs to upload sonoff/data/*.json. You may modify contents but not necessary.
+## Device Setup
+1. Flash SPIFFs to upload the configuration files - sonoff_Basic/data/config.json. You may modify the contents prior to upload but not necessary
 
-2. To enable/disable serial debug output, uncomment/comment first line in sonoff/src/User.h.
+2. Flash firmware
 
-3. Flash firmware.
+3. Device will initially come up with its own *Access Point* called esp82XX-xxxxxxx. Connect to this and configure WiFi parameters. Once saved, device will reboot and connect to your WiFi  
+   See section **Finding device IP Address**
 
-All future updates can now be performed over the air no need for USB assuming above was successful.
+4. Once device is connected to WiFi, connect to it using a Browser. User/Password are stored in MultiSensor/src/User.h
 
--------------------------------------------------------------------------------------------------------------
-## Usage
-1. Device will initially come up with its own *Access Point* called ITEAD-xxxxxxx. Connect to this and configure WiFi parameters. Once saved, device will reboot.
+5. Configure device parameters on web page and save settings. Once saved, device will reboot and reconnect to your WiFi and MQTT Broker
 
-2. On bootup, device will connect to your WiFi. Find its IP address through your router and connect to it. Configure all parameters and once saved, device will reboot.
+- Above steps should be done over USB-->Serial interface until device is fully functioning  
+- Future firmware updates can be performed over the air with no need for USB-->Serial interface
 
-3. Device can be controlled with MQTT messages, onboard button or adding a switch between GPIO-14 and GND.
-
-4. Onboard LED light will inidicate when power is on.
-
-- An alternative method for finding your device is to scan your mDNS network
+7. Test device and once ok, turn off debugging and upload new compiled firmware  
+   See section **Debug - Serial/Telnet output**
 
 -------------------------------------------------------------------------------------------------------------
-## Sample openHAB "item" for Broker/MQTT messages. 
-	- Switch Power "Power" {mqtt=">[brk:cmnd/Power:command:*:default], <[brk:stat/Power:state:default]",autoupdate="false"}
-The inbound "<" message helps to keep openHAB in sync with device status.
+## Finding device IP Address
+	To get the device IP address you have the following options:
+	1. Look at the Serial output where it will show on startup (assuming you have debug output turned on)
+	2. Look in your router to see WiFi clients
+	3. Try an mDNS browser app but this often takes time to get the device showing up
+
+	4. If already connected to WiFi and MQTT Broker, you can send a blank MQTT message as defined in user.h at "IP_REQUEST"  
+     Each device will respond with a MQTT message such as defined with "IP/REPLY/<deviceID>" with the IP address in the payload.
 
 -------------------------------------------------------------------------------------------------------------
-## OTA Updates
-Once device is connected to your WiFi, find its IP and connect to it. User/Password are stored in sonoff/src/User.h so you can always modify and flash new firmware easily.
+## Debug - Serial/Telnet output
+	You have two options after turning on SERIAL_DEBUG within sonoff_Basic\src\User.h:
+		- Serial output over USB if connected
+		- Telnet if connected
+
+**Do not leave SERIAL_DEBUG enabled for normal use**
 
 -------------------------------------------------------------------------------------------------------------
-- I am simply reusing other peoples amazing work for instance the following libraries PubSubClient and WifiManager.
+## OTA Firmware Updates
+Once device is connected to your WiFi, find its IP and connect to it through using a Browser  
+User/Password are stored in sonoff_Basic/src/User.h and you can always modify and flash new firmware to change it  
+Follow on screen firmware update instructions to flash new firmware
 
-- My development environment is Atom with its builtin PlatformIO toolset. Its a fantastic build and debug environment.
+-------------------------------------------------------------------------------------------------------------
+## Credits
+I am simply reusing other peoples amazing work for instance the following libraries:  
+	- [PubSubClient](https://github.com/knolleary/pubsubclient)  
+	- [WifiManager](https://github.com/tzapu/WiFiManager)  
+	- [RemoteDebug](https://github.com/JoaoLopesF/RemoteDebug)  
+	- [ArduinoJson](https://github.com/bblanchon/ArduinoJson)  
+	- [Adafruit Unified Sensor](https://github.com/adafruit/Adafruit_Sensor)  
+	- [DHT sensor library](https://github.com/adafruit/DHT-sensor-library)  
+
+AND OF COURSE the many examples on github
+
+My development environment is Atom with its builtin PlatformIO toolset. Its a fantastic build and debug environment.

@@ -61,7 +61,7 @@ void setup() {
 
   // Get chip's Unique ID to be used in various places
   uint32_t chipid = ESP.getChipId();
-  snprintf(chipID, 25, "ESP-%08X", chipid);
+  snprintf(chipID, 25, "ESP82XX-%08X", chipid);
 #ifdef SERIAL_DEBUG
   debug("..Chip ID: "); debugln(chipID);
 #endif
