@@ -1,5 +1,5 @@
-#define SERIAL_DEBUG                                                 // Comment this to disable debugging
-#define SERIAL_DELAY          000                                    // Delay for Serial.println to be able read
+//#define SERIAL_DEBUG                                                 // Comment this to disable debugging
+
 #define LED_PIN								13																		 // LED indicator
 #define RELAY_PIN							12																		 // Relay for power switch
 #define TOGGLE_PIN					  00																		 // On board button
@@ -10,3 +10,5 @@
 #define WWW_PASSWD            "esp8266ex"                            // Password for web page
 #define CONFIGFILE            "/config.json"                         // Configuration file holding various values
 #define STATEFILE             "/state.json"                          // State file holding Relay state
+#define IP_REQUEST            "IP/Request"                           // MQTT IP Request Message
+#define IP_REPLY              "IP/Reply/"                            // MQTT IP Reply Message

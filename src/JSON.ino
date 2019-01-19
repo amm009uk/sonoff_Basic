@@ -1,7 +1,7 @@
 char* loadConfig() {                                                 // Load JSON conig file from SPIFFS
 
 #ifdef SERIAL_DEBUG
-  debugln("Running loadConfig()");
+  rdebugAln("Running loadConfig()");
 #endif
 
   File configFile = SPIFFS.open(CONFIGFILE, "r");
@@ -40,16 +40,16 @@ char* loadConfig() {                                                 // Load JSO
   const char* t_MQTT_outTopic    = MQTT["outTopic"];    strcpy(mqtt_outTopic,    t_MQTT_outTopic);
 
 #ifdef SERIAL_DEBUG
-  debugln("..Config file start");
-  debug("....deviceID:         "); debugln(deviceID);
-  debug("....Reboot At:        "); debugln((String)rebootAt);
-  debug("....MQTT Server:      "); debugln(mqtt_server);
-  debug("....MQTT Port:        "); debugln((String)mqtt_port);
-  debug("....MQTT User:        "); debugln((String)mqtt_user);
-  debug("....MQTT Password:    "); debugln((String)mqtt_password);
-  debug("....MQTT inTopic:     "); debugln(mqtt_inTopic);
-  debug("....MQTT outTopic:    "); debugln(mqtt_outTopic);
-  debugln("..Config file end");
+  rdebugAln("..Config file start");
+  rdebugAln("....deviceID:           %s", deviceID);
+  rdebugAln("....Reboot At:          %d", rebootAt);
+  rdebugAln("....MQTT Server:        %s", mqtt_server);
+  rdebugAln("....MQTT Port:          %d", mqtt_port);
+  rdebugAln("....MQTT User:          %s", mqtt_user);
+  rdebugAln("....MQTT Password:      %s", mqtt_password);
+  rdebugAln("....MQTT inTopic:       %s", mqtt_inTopic);
+  rdebugAln("....MQTT outTopic:      %s", mqtt_outTopic);
+  rdebugAln("..Config file end"); 
 #endif
 
   delay(50);
@@ -60,7 +60,7 @@ char* loadConfig() {                                                 // Load JSO
 char* saveConfig() {                                                 // Save JSON config file to SPIFFS
 
 #ifdef SERIAL_DEBUG
-  debugln("Running saveConfig()");
+  rdebugAln("Running saveConfig()");
 #endif
 
   File configFile = SPIFFS.open(CONFIGFILE, "w");
@@ -87,7 +87,7 @@ char* saveConfig() {                                                 // Save JSO
   delay(50);
 
 #ifdef SERIAL_DEBUG
-  debugln("..Config changes saved");
+  rdebugAln("..Config changes saved");
 #endif
 
   return (char*)"OK";
@@ -97,7 +97,7 @@ char* saveConfig() {                                                 // Save JSO
 char* loadState() {                                                  // Load JSON state file from SPIFFS
 
 #ifdef SERIAL_DEBUG
-  debugln("Running loadState()");
+  rdebugAln("Running loadState()");
 #endif
 
   File stateFile = SPIFFS.open(STATEFILE, "r");
@@ -123,7 +123,7 @@ char* loadState() {                                                  // Load JSO
 	int         t_state    = root["state"];     state    = t_state;
 
 #ifdef SERIAL_DEBUG
-	debugln("..Initial state: " + String(state));
+	rdebugAln("..Initial state: %d", state);
 #endif
 
   delay(50);
@@ -135,7 +135,7 @@ char* loadState() {                                                  // Load JSO
 char* saveState() {                                      // Save JSON state file to SPIFFS
 
 #ifdef SERIAL_DEBUG
-  debugln("Running saveState()");
+  rdebugAln("Running saveState()");
 #endif
 
   File stateFile = SPIFFS.open(STATEFILE, "w");

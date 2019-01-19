@@ -13,8 +13,6 @@
 
 - You can set a periodic reboot option to keep things fresh
 
-
-
 -------------------------------------------------------------------------------------------------------------
 ## Version
 1.0 Initial version  
