@@ -31,13 +31,14 @@
 
 2. Device will initially come up with its own *Access Point* called esp82XX-xxxxxxx. Connect to this and configure WiFi parameters. Once saved, device will reboot and connect to your WiFi  
 
-3. Once device is connected to WiFi, get device IP from serial output and connect to it using a Browser. User/Password are stored in **sonoff/src/User.h**  
+3. Once device is connected to WiFi, get device IP from serial output and connect to it using Browser
+   User/Password are stored in **sonoff/src/User.h**  
 
 4. Configure device parameters on web page  
        - The MQTT section should be self explanatory  
        - The Inbound message type will be received by the device containing either **ON** or **OFF**  
-       - The Outbound message type will be sent by the device containing the action carries out either **ON** or **OFF**  
-       - You may chose to wipe out out previously configured WiFi will also reboot the device  
+       - The Outbound message type will be sent by the device containing the action carried out either **ON** or **OFF**  
+       - You may chose to wipe out out previously configured WiFi settings which will also reboot the device  
        - Once all MQTT and message types are correct, save settings and device will reboot and reconnect to your WiFi and MQTT Broker  
 
 - Above steps should be done over USB-->Serial interface until device is fully functioning  
