@@ -60,8 +60,8 @@ To get the device IP address you have the following options:
   
   3. Try an mDNS browser app but this often takes a very time to get the device showing up  
   
-  4. If already connected to WiFi and MQTT Broker, you can send a blank MQTT message as defined in user.h at "IP_REQUEST"  
-     Device will respond with a MQTT message such as defined with "IP/REPLY/<deviceID>" with the IP address in the payload  
+  4. If already connected to WiFi and MQTT Broker, you can send a blank MQTT message as defined in user.h at **"IP_REQUEST"**  
+     Device will respond with a MQTT message such as defined with **"IP/REPLY/<deviceID>"** with the IP address in the payload  
 
 -------------------------------------------------------------------------------------------------------------
 ## Credits
