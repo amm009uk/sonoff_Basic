@@ -18,9 +18,9 @@
 1.2 Updated README  
 1.3 Added IP lookup  
 1.4 Added over the air serial output with Telnet (RemoteDebug library)  
-1.5 Moved web page to PROGMEM 
-1.6 Upgraded to Arduino 6.x 
-1.7 Minor stability changes 
+1.5 Moved web page to PROGMEM  
+1.6 Upgraded to Arduino 6.x  
+1.7 Minor stability changes  
 
 -------------------------------------------------------------------------------------------------------------
 ## Device Setup
