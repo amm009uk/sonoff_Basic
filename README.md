@@ -24,7 +24,7 @@
 
 -------------------------------------------------------------------------------------------------------------
 ## Device Setup
-For ease of initial setup, enable Serial debug output within User.h and monitor output. You will get the device IP and be able to monitor activity before deployment 
+**For ease of initial setup, enable Serial debug output within User.h and monitor output. You will get the device IP and be able to monitor activity before deployment**  
 
 1. Flash firmware. Use must power on/off after flashing firmware due a bug within esp8266 causing a reboot to hang 
 
