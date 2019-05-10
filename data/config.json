@@ -1,12 +1,12 @@
 {
-  "deviceID":      "New-sonoff",
+  "deviceID":      "LivingRoomPower",
+  "state":         "false",
   "MQTT": {
-    "Server":      "192.168.100.10",
+  	"Server":      "192.168.100.10",
     "Port":        1883,
-    "User":        "user",
+    "User":        "sonoff",
     "Password":    "password",
     "inTopic":     "cmnd/Power/LivingRoom",
     "outTopic":    "stat/Power/LivingRoom"
-  },
-  "state":         "false"
+  }
 }

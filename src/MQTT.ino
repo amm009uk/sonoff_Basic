@@ -1,76 +1,89 @@
 boolean MQTTconnect() {
 
-#ifdef SERIAL_DEBUG
-	rdebugAln("Attempting MQTT connection to %s::%d with %s/%s", mqtt_server, mqtt_port, mqtt_user, mqtt_password);
-#endif
+  #ifdef SERIAL_DEBUG
+	debug(F("Attempting MQTT connection to ")); debug(mqtt_server); debug(F(":")); debug(String(mqtt_port)); debug(F(" with ")); debug(mqtt_user); debug(F("/")); debugln(mqtt_password);
+  #endif
 
-  if (MQTTclient.connect(deviceID, mqtt_user, mqtt_password)) {   
+  if (MQTTclient.connect(deviceID, mqtt_user, mqtt_password)) {
+  	if(!digitalRead(RELAY_PIN)) {
+			MQTTclient.publish(mqtt_outTopic, "OFF");
+		} else {
+			MQTTclient.publish(mqtt_outTopic, "ON");
+		}						
   	MQTTclient.subscribe(mqtt_inTopic);
   	MQTTclient.subscribe(IP_REQUEST);
-#ifdef SERIAL_DEBUG
-    rdebugAln("..MQTT connected");
-#endif
+
+    #ifdef SERIAL_DEBUG
+    debugln(F("..MQTT connected"));
+    #endif
+
   } else {
-#ifdef SERIAL_DEBUG
-    rdebugAln("..MQTT connection failed");
-#endif
+    #ifdef SERIAL_DEBUG
+    debugln(F("..MQTT connection failed"));
+    #endif
   }
 
   delay(10);
   return MQTTclient.connected();
-  
+
 } // MQTTconnect()
 
 void callback(char* topic, byte* payload, unsigned int length) {
 
-#ifdef SERIAL_DEBUG
-  rdebugAln("In MQTT Callback() message arrived [%s]", topic);
-#endif
+  #ifdef SERIAL_DEBUG
+  debug(F("In MQTT Callback() message arrived ")); debugln(topic);
+  #endif
 
-  if (strcmp(topic, IP_REQUEST)==0) {                                // Check if we want this message
+  //
+  // Block to process IP_REQUEST messages
+  //
+  if (strcmp(topic, IP_REQUEST)==0) {                                // Check if message is for IP request
 
   	String replyMessage = IP_REPLY;                                  // Build the MQTT reply messsage name
   	replyMessage.concat(deviceID);                                   // ...
 
   	String Msg = WiFi.localIP().toString();                          // Build MQTT message payload contents
 
-#ifdef SERIAL_DEBUG
-		rdebugAln("MQTT Publish %s with payload %s", replyMessage.c_str(), Msg.c_str());
-#endif
+    #ifdef SERIAL_DEBUG
+		debug(F("MQTT Publish ")); debug(replyMessage.c_str()); debug(F(" with payload ")); debugln(Msg.c_str());
+    #endif
 
 		MQTTclient.publish(replyMessage.c_str(), Msg.c_str());		       // Publish message to Broker
+		
+		delay(10);
 		return;
 
   }
-  
+
+  //
+  // Block to process regular messages
+  //
 	String msgContents;
-	
-  if (strcmp(topic, mqtt_inTopic)==0) {                              // Check if we want this message if so get the payload
+  if (strcmp(topic, mqtt_inTopic)==0) {                              // Check if message is to Power toggle
     for (int i = 0; (i < (int)length); i++) {
 			char receivedChar = (char)payload[i];
-			msgContents.concat(receivedChar);			
-    } 
-  } else {                                                           // Not interested in this message
-  		rdebugAln("..Message ignored");
-  	return;
-	}
+			msgContents.concat(receivedChar);
+    }
+    
+    #ifdef SERIAL_DEBUG
+		debug(F("..Payload: ")); debugln(msgContents.c_str());
+    #endif
 
-#ifdef SERIAL_DEBUG
-	rdebugAln("..Payload: %s", msgContents.c_str());
-#endif
+		if (msgContents == "ON")
+			relayOn();
+		
+		if (msgContents == "OFF")
+			relayOff();
+			
+		delay(10);
+ 	  return;
+  } 
 
-	//
-	// Take appropriate action depending on message contents
-	//
-
-	if (msgContents == "ON") {
-		relayOn();
-	}
-	
-	if (msgContents == "OFF") {
-		relayOff();
-	}
-
-  delay(10);
+  //
+  // Not interested in this message
+  //
+  #ifdef SERIAL_DEBUG
+	debugln(F("..Message ignored"));
+  #endif
 
 } // callback()

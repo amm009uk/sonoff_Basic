@@ -11,8 +11,6 @@
 
 - WiFi or MQTT drop outs are handled automatically
 
-- You can set a periodic reboot option to keep things fresh
-
 -------------------------------------------------------------------------------------------------------------
 ## Version
 1.0 Initial version  
@@ -20,25 +18,27 @@
 1.2 Updated README  
 1.3 Added IP lookup  
 1.4 Added over the air serial output with Telnet (RemoteDebug library)  
+1.5 Moved web page to PROGMEM
+1.6 Upgraded to Arduino 6.x
+1.7 Minor stability changes
 
 -------------------------------------------------------------------------------------------------------------
 ## Device Setup
-1. Flash SPIFFs to upload the configuration files - sonoff_Basic/data/config.json. You may modify the contents prior to upload but not necessary
+For ease of initial setup, enable Serial debug output within User.h and monitor output. You will get the device IP and be able to monitor activity before deployment
 
-2. Flash firmware
+1. Flash firmware. Use must power on/off after flashing firmware due a bug within esp8266 causing a reboot to hang
 
-3. Device will initially come up with its own *Access Point* called esp82XX-xxxxxxx. Connect to this and configure WiFi parameters. Once saved, device will reboot and connect to your WiFi  
+2. Device will initially come up with its own *Access Point* called esp82XX-xxxxxxx. Connect to this and configure WiFi parameters. Once saved, device will reboot and connect to your WiFi 
    See section **Finding device IP Address**
 
-4. Once device is connected to WiFi, connect to it using a Browser. User/Password are stored in MultiSensor/src/User.h
+3. Once device is connected to WiFi, get device IP from serial output and connect to it using a Browser. User/Password are stored in sonoff/src/User.h
 
-5. Configure device parameters on web page and save settings. Once saved, device will reboot and reconnect to your WiFi and MQTT Broker
+4. Configure device parameters on web page and save settings. Device will reboot and reconnect to your WiFi and MQTT Broker
 
 - Above steps should be done over USB-->Serial interface until device is fully functioning  
-- Future firmware updates can be performed over the air with no need for USB-->Serial interface
 
-7. Test device and once ok, turn off debugging and upload new compiled firmware  
-   See section **Debug - Serial/Telnet output**
+5. Test device and once ok, turn off debugging within User.h and upload new compiled firmware  
+
 
 -------------------------------------------------------------------------------------------------------------
 ## Finding device IP Address
@@ -48,21 +48,7 @@
 	3. Try an mDNS browser app but this often takes time to get the device showing up
 
 	4. If already connected to WiFi and MQTT Broker, you can send a blank MQTT message as defined in user.h at "IP_REQUEST"  
-     Each device will respond with a MQTT message such as defined with "IP/REPLY/<deviceID>" with the IP address in the payload.
-
--------------------------------------------------------------------------------------------------------------
-## Debug - Serial/Telnet output
-	You have two options after turning on SERIAL_DEBUG within sonoff_Basic\src\User.h:
-		- Serial output over USB if connected
-		- Telnet if connected
-
-**Do not leave SERIAL_DEBUG enabled for normal use**
-
--------------------------------------------------------------------------------------------------------------
-## OTA Firmware Updates
-Once device is connected to your WiFi, find its IP and connect to it through using a Browser  
-User/Password are stored in sonoff_Basic/src/User.h and you can always modify and flash new firmware to change it  
-Follow on screen firmware update instructions to flash new firmware
+     Device will respond with a MQTT message such as defined with "IP/REPLY/<deviceID>" with the IP address in the payload
 
 -------------------------------------------------------------------------------------------------------------
 ## Credits

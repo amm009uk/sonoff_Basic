@@ -1,203 +1,97 @@
 void handleNotFound() {
 
-#ifdef SERIAL_DEBUG
-  rdebugAln("Running handleNotFound()");
-#endif
+  #ifdef SERIAL_DEBUG
+	debugln(F("Bad URL!!!"));
+  #endif
+
   httpServer.send(404, "text/plain", "404: Not found");
 
 } // handleNotFound()
 
-void handleRoot() {
 
-#ifdef SERIAL_DEBUG
-  rdebugAln("Running handleRoot()");
-#endif
+void handleRoot() {                                                  // Send the main page
+
   if(!httpServer.authenticate(WWW_USER, WWW_PASSWD)) {               // Check user + password
     return httpServer.requestAuthentication();                       // Request user + password
   }
-#ifdef SERIAL_DEBUG
-  rdebugAln("..HTTP status 200: Good URL and successfully authenticated");
-#endif
+  
+  #ifdef SERIAL_DEBUG
+	debugln(F("handleRoot(Reading index.html)"));
+	debugln(F("..Variables"));
+ 	debug(F("....Version:        ")); debugln(version);
+  debug(F("....deviceID:       ")); debugln(deviceID);
+  debug(F("....MQTT Server:    ")); debugln(mqtt_server);
+  debug(F("....MQTT Port:      ")); debugln(String(mqtt_port));
+  debug(F("....MQTT User:      ")); debugln(mqtt_user);
+  debug(F("....MQTT Password:  ")); debugln(mqtt_password);
+  debug(F("....MQTT inTopic:   ")); debugln(mqtt_inTopic);
+  debug(F("....MQTT outTopic:  ")); debugln(mqtt_outTopic);
+  #endif
 
-  sendHTMLPage();
-  delay(10);                                                         // Build the HTML (array) and send to browser
+		
+  String page;
+  page += FPSTR(mainPage);
+  
+  if (MQTTclient.connected())
+		page.replace("{{_MQTT}}", "Yes");
+	else
+		page.replace("{{_MQTT}}", "No");
 
+	page.replace("{{_version}}",       version);
+	page.replace("{{_deviceID}}",      deviceID);
+	page.replace("{{_mqtt_server}}",   mqtt_server);
+	page.replace("{{_mqtt_port}}",     String(mqtt_port));
+	page.replace("{{_mqtt_user}}",     mqtt_user);
+	page.replace("{{_mqtt_password}}", mqtt_password);
+	page.replace("{{_mqtt_inTopic}}",  mqtt_inTopic);
+	page.replace("{{_mqtt_outTopic}}", mqtt_outTopic);
+
+	httpServer.send(200, "text/html", page);
+	
+  delay(50);
+
+  #ifdef SERIAL_DEBUG
+	debugln(F("HTML loaded"));
+  #endif
+	                           
 } // handleRoot()
 
-void sendHTMLPage() {
 
-#ifdef SERIAL_DEBUG
-  rdebugAln("Running sendHTMLPage()");
-#endif
-
-  INDEX_HTML  = "<!DOCTYPE html>\n";
-  INDEX_HTML += "<html lang=\"en\">\n";
-	INDEX_HTML += "<head>\n";
-	INDEX_HTML += "<title>Configure Settings</title>\n";
-	INDEX_HTML += "<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>\n";
-
-	INDEX_HTML += "</head>\n";
-	INDEX_HTML += "<body> \n";
-
-	INDEX_HTML += "<table border=\"0\" width=\"400\" align=\"center\">\n";
-	INDEX_HTML += "<tr>\n";
-	INDEX_HTML += "<td>\n";
-	
-	INDEX_HTML += "<h2>sonoff Configuration - ";
-	INDEX_HTML += "<label>version</label>";
-	INDEX_HTML += version;
-	INDEX_HTML += "</h2>\n";
-
-  INDEX_HTML += "<form action='/saveChanges' method='POST' target=\"_self\">\n";
-
-/**********************************************************************************************/
-
-	INDEX_HTML += "<fieldset>\n";
-	INDEX_HTML += "<legend><h4>&nbsp;Device Details&nbsp;</h4></legend>\n";
-	
-	INDEX_HTML += "<table>\n";
-	
-	INDEX_HTML += "<tr>\n";
-  INDEX_HTML += "<td><label>Device ID</label></td>\n";
-  INDEX_HTML += "<td><input type=\"text\" name=\"deviceID\" size=\"30\" title=\"A Unique ID to help you find device with mDNS\" value=\"";
-  INDEX_HTML += deviceID;
-  INDEX_HTML += "\"></td>\n";
-	INDEX_HTML += "</tr>\n";
-	
-	INDEX_HTML += "<tr>\n";  
-  INDEX_HTML += "<td><label>Reboot Interval</label></td>\n";
-  INDEX_HTML += "<td><input type=\"text\" name=\"rebootAt\" size=\"30\" title=\"Reboot device after N Hours or 0 to disable\" value=\"";
-  INDEX_HTML += rebootAt;
-  INDEX_HTML += "\"></td>\n";
-  INDEX_HTML += "</tr>\n";
-	
-	INDEX_HTML += "</table>\n";
-	
-	INDEX_HTML += "</fieldset>\n";
-
-/**********************************************************************************************/
-	
-	INDEX_HTML += "<fieldset>\n";
-	INDEX_HTML += "<legend><h4>&nbsp;MQTT Broker Details&nbsp;</h4></legend>\n";
-	
-	INDEX_HTML += "<table>\n";	
-	
-	INDEX_HTML += "<tr>\n";
-	INDEX_HTML += "<td><label>Server&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></td>\n";
-  INDEX_HTML += "<td><input type=\"text\" name=\"mqtt_server\" size=\"30\" title=\"Broker address\" value=\"";
-  INDEX_HTML += mqtt_server;
-  INDEX_HTML += "\"></td>\n";
-	INDEX_HTML += "</tr>\n";
-  
-	INDEX_HTML += "<tr>\n";
-  INDEX_HTML += "<td><label>Server Port&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></td>\n";
-  INDEX_HTML += "<td><input type=\"text\" name=\"mqtt_port\" size=\"30\" title=\"Broker port typically 1883\" value=\"";
-  INDEX_HTML += mqtt_port;
-  INDEX_HTML += "\"></td>\n";
-  INDEX_HTML += "</tr>\n";
- 
-	INDEX_HTML += "<tr>\n";
-	INDEX_HTML += "<td><label>User&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></td>\n";
-  INDEX_HTML += "<td><input type=\"text\" name=\"mqtt_user\" size=\"30\" title=\"Broker username\" value=\"";
-  INDEX_HTML += mqtt_user;
-  INDEX_HTML += "\"></td>\n";
-  INDEX_HTML += "</tr>\n";
-
-	INDEX_HTML += "<tr>\n";
-  INDEX_HTML += "<td><label>Password&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></td>\n";
-  INDEX_HTML += "<td><input type=\"password\" name=\"mqtt_password\" size=\"30\" title=\"Broker password\" value=\"";
-  INDEX_HTML += mqtt_password;
-  INDEX_HTML += "\"></td>\n";
-	INDEX_HTML += "</tr>\n";
-	
-	INDEX_HTML += "</table>\n";
-	
-	INDEX_HTML += "</fieldset>\n";
-
-/**********************************************************************************************/
-
-	INDEX_HTML += "<fieldset>\n";
-	INDEX_HTML += "<legend><h4>&nbsp;Message Details&nbsp;</h4></legend>\n";
-
-	INDEX_HTML += "<table>\n";	
-	
-	INDEX_HTML += "<tr>\n";
-  INDEX_HTML += "<td><label>Inbound&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></td>\n";
-  INDEX_HTML += "<td><input type=\"text\" name=\"mqtt_inTopic\" size=\"30\" title=\"Eg. cmnd/Power/LivingRoom\" value=\"";
-  INDEX_HTML += mqtt_inTopic;
-  INDEX_HTML += "\"/></td>\n";
-  INDEX_HTML += "</tr>\n";
-
-	INDEX_HTML += "<tr>\n";
-  INDEX_HTML += "<td><label>Outbound&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></td>\n";
-  INDEX_HTML += "<td><input type=\"text\" name=\"mqtt_outTopic6\" size=\"30\" title=\"Eg. stat/Power/LivingRoom\" value=\"";
-  INDEX_HTML += mqtt_outTopic;
-  INDEX_HTML += "\"/></td>\n";
-	INDEX_HTML += "</tr>\n";
-	
-	INDEX_HTML += "</table>\n";
-
-	INDEX_HTML += "</fieldset>\n";
-	
-/**********************************************************************************************/
-
-  INDEX_HTML += "<br>\n";
-
-	INDEX_HTML += "<table>\n";	
-	INDEX_HTML += "<tr>\n";
-  INDEX_HTML += "<td><input type=\"submit\" value=\"Save Changes\" class=\"btn-save\"></td>\n";
-	INDEX_HTML += "<td><input type=button onClick=\"parent.location='/firmware'\" value='Firmware Update' class=\"btn-update\"></td>\n";
-	INDEX_HTML += "</tr>\n";
-	INDEX_HTML += "</table>\n";
-	
-	INDEX_HTML += "</form>\n";
-
-	INDEX_HTML += "</td>\n";
-	INDEX_HTML += "</tr>\n";
-	INDEX_HTML += "</table>\n";
-
-	INDEX_HTML += "</body>\n";
-  INDEX_HTML += "</html>";
-
-  httpServer.send(200, "text/html", INDEX_HTML);                     // Send HTTP status 200 (Ok) and HTML to the browser
-  delay(100);
-
-#ifdef SERIAL_DEBUG
-  rdebugAln("..Web Page loaded");
-#endif
-
-} // sendHTMLPage()
-
-void saveChanges() {
-
-#ifdef SERIAL_DEBUG
-  rdebugAln("Running saveChanges()");
-#endif
+void handlesaveChanges() {
 
   if (httpServer.args() !=  8) {
-#ifdef SERIAL_DEBUG
-    rdebugAln("Wrong number args received from HTTP POST: %d", httpServer.args());
-#endif
+    #ifdef SERIAL_DEBUGX
+    debug(F("Wrong number of args received from HTTP POST: ")); debugln(String(httpServer.args()));
+	  for ( uint8_t i = 0; i < httpServer.args(); i++ ) {
+  	  debug((String) i);
+  	  debugln(httpServer.arg(i).c_str());
+  	}
+    #endif
   	return;
   }
-   
-//  for ( uint8_t i = 0; i < httpServer.args(); i++ ) {
-//    rdebugAln("%s", httpServer.arg(i).c_str());
-//  }
 
   strcpy(deviceID, httpServer.arg(0).c_str());
-  rebootAt    = httpServer.arg(1).toInt();
-  strcpy(mqtt_server, httpServer.arg(2).c_str());
-  mqtt_port = httpServer.arg(3).toInt();
-  strcpy(mqtt_user, httpServer.arg(4).c_str());
-  strcpy(mqtt_password, httpServer.arg(5).c_str());
-  strcpy(mqtt_inTopic, httpServer.arg(6).c_str());
-  strcpy(mqtt_outTopic, httpServer.arg(7).c_str());
+  strcpy(mqtt_server, httpServer.arg(1).c_str());
+  mqtt_port = httpServer.arg(2).toInt();
+  strcpy(mqtt_user, httpServer.arg(3).c_str());
+  strcpy(mqtt_password, httpServer.arg(4).c_str());
+  strcpy(mqtt_inTopic, httpServer.arg(5).c_str());
+  strcpy(mqtt_outTopic, httpServer.arg(6).c_str());
 
-	delay(50);
   saveConfig();
   httpServer.send(200,"text/html", "<META http-equiv=\"refresh\" content=\"15;URL=/\">Changes saved! Rebooting please wait this page will refresh...");
-//  delay(50);
+  delay(100);
   reboot();
   
-} // saveChanges()
+} // handlesaveChanges()
+
+
+void handleWiFiReset() {                                             // Wipe WiFi settings
+
+	wifiManager.resetSettings();                                       // Wipes out previously saved WiFi settings
+	
+	httpServer.send(200, "text/plain", "WiFi Settings erased and device is rebooting...");
+  delay(50);
+	reboot();
+	
+} // handleWiFiReset()
