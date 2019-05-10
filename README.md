@@ -54,21 +54,21 @@
 ## Finding device IP Address
 To get the device IP address you have the following options:  
 
-	1. Look at the Serial output where it will show on startup (assuming you have debug output turned on)  
-	
-	2. Look in your router to see WiFi clients  
-	
-	3. Try an mDNS browser app but this often takes a very time to get the device showing up  
-	
-	4. If already connected to WiFi and MQTT Broker, you can send a blank MQTT message as defined in user.h at "IP_REQUEST"  
+  1. Look at the Serial output where it will show on startup (assuming you have debug output turned on)  
+  
+  2. Look in your router to see WiFi clients  
+  
+  3. Try an mDNS browser app but this often takes a very time to get the device showing up  
+  
+  4. If already connected to WiFi and MQTT Broker, you can send a blank MQTT message as defined in user.h at "IP_REQUEST"  
      Device will respond with a MQTT message such as defined with "IP/REPLY/<deviceID>" with the IP address in the payload  
 
 -------------------------------------------------------------------------------------------------------------
 ## Credits
 I am simply reusing other peoples amazing work for instance the following libraries:  
-	- [PubSubClient](https://github.com/knolleary/pubsubclient)  
-	- [WifiManager](https://github.com/tzapu/WiFiManager)  
-	- [ArduinoJson](https://github.com/bblanchon/ArduinoJson)  
+  - [PubSubClient](https://github.com/knolleary/pubsubclient)  
+  - [WifiManager](https://github.com/tzapu/WiFiManager)  
+  - [ArduinoJson](https://github.com/bblanchon/ArduinoJson)  
 
 AND OF COURSE the many examples on github  
 
