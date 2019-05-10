@@ -24,15 +24,21 @@
 
 -------------------------------------------------------------------------------------------------------------
 ## Device Setup
-**For ease of initial setup, enable Serial debug output within User.h and monitor output. You will get the device IP and be able to monitor activity before deployment**  
+**For ease of initial setup, enable Serial debug output within User.h and monitor output. You will get the device IP and be able to monitor activity before final deployment**  
 
-1. Flash firmware. Use must power on/off after flashing firmware due a bug within esp8266 causing a reboot to hang 
+1. Flash firmware
+    Use must power on/off after flashing firmware due a bug within esp8266 causing a reboot to hang  
 
-2. Device will initially come up with its own *Access Point* called esp82XX-xxxxxxx. Connect to this and configure WiFi parameters. Once saved, device will reboot and connect to your WiFi 
+2. Device will initially come up with its own *Access Point* called esp82XX-xxxxxxx. Connect to this and configure WiFi parameters. Once saved, device will reboot and connect to your WiFi  
 
-3. Once device is connected to WiFi, get device IP from serial output and connect to it using a Browser. User/Password are stored in sonoff/src/User.h 
+3. Once device is connected to WiFi, get device IP from serial output and connect to it using a Browser. User/Password are stored in **sonoff/src/User.h**  
 
-4. Configure device parameters on web page and save settings. Device will reboot and reconnect to your WiFi and MQTT Broker 
+4. Configure device parameters on web page and save settings  
+       The MQTT section should be self explanatory  
+       The Inbound message type will be received by the device containing either ON or OFF
+       The Outbound message type will be sent by the device containing the action carries out either ON or OFF  
+       
+   Device will reboot and reconnect to your WiFi and MQTT Broker  
 
 - Above steps should be done over USB-->Serial interface until device is fully functioning  
 
