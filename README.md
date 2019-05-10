@@ -5,7 +5,7 @@
 -------------------------------------------------------------------------------------------------------------
 ## Features
 
-- Custom firmware to take greater control and integrate with an MQTT Broker. The Broker would typically integrate with your Home Automation system
+- Custom firmware to take greater control and integrate with an MQTT Broker. The Broker would typically integrate with your Home Automation system. In my case I use openHAB  
 
 - Device will respond to:  
     1. MQTT message  
@@ -24,6 +24,7 @@
 1.5 Moved web page to PROGMEM  
 1.6 Upgraded to Arduino 6.x  
 1.7 Minor stability changes  
+1.8 Removed RemoteDebug library  
 
 -------------------------------------------------------------------------------------------------------------
 ## Device Setup

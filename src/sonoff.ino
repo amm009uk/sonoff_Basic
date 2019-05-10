@@ -1,7 +1,7 @@
 #include "User.h"                                                    // Our custom settings
 
 /*----------------------------------------- Global variables -----------------------------------------*/
-const static  String version = "1.7";                                // Version control no
+const static  String version = "1.8";                                // Version control no
 
 WiFiClient                  WiFiClient;                              // The WiFi client object
 WiFiManager                 wifiManager;         		                 // WiFiManager will do all the work of managing WiFi
