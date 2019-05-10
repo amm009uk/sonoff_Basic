@@ -34,9 +34,9 @@
 3. Once device is connected to WiFi, get device IP from serial output and connect to it using a Browser. User/Password are stored in **sonoff/src/User.h**  
 
 4. Configure device parameters on web page and save settings  
-       The MQTT section should be self explanatory  
-       The Inbound message type will be received by the device containing either ON or OFF
-       The Outbound message type will be sent by the device containing the action carries out either ON or OFF  
+       - The MQTT section should be self explanatory  
+       - The Inbound message type will be received by the device containing either ON or OFF  
+       - The Outbound message type will be sent by the device containing the action carries out either ON or OFF  
        
    Device will reboot and reconnect to your WiFi and MQTT Broker  
 
