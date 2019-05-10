@@ -28,7 +28,7 @@
 
 -------------------------------------------------------------------------------------------------------------
 ## Device Setup
-**For ease of initial setup, enable Serial debug output within User.h and monitor output. You will get the device IP and be able to monitor activity before final deployment**  
+**For ease of initial setup, enable Serial debug output within **User.h** and monitor output. You will get the device IP and be able to monitor activity before final deployment**  
 
 1. Flash firmware
     Use must power on/off after flashing firmware due a bug within esp8266 causing a reboot to hang  
@@ -45,17 +45,21 @@
        - You may chose to wipe out out previously configured WiFi settings which will also reboot the device  
        - Once all MQTT and message types are correct, save settings and device will reboot and reconnect to your WiFi and MQTT Broker  
 
-- Above steps should be done over USB-->Serial interface until device is fully functioning  
+**Above steps should be done over USB-->Serial interface until device is fully functioning**  
 
-5. Test device and once ok, turn off debugging within User.h and upload firmware one last time  
+5. Test device and once ok, turn off debugging within **User.h** and upload firmware one last time  
 
 
 -------------------------------------------------------------------------------------------------------------
 ## Finding device IP Address
-To get the device IP address you have the following options:
+To get the device IP address you have the following options:  
+
 	1. Look at the Serial output where it will show on startup (assuming you have debug output turned on)  
+	
 	2. Look in your router to see WiFi clients  
+	
 	3. Try an mDNS browser app but this often takes time to get the device showing up  
+	
 	4. If already connected to WiFi and MQTT Broker, you can send a blank MQTT message as defined in user.h at "IP_REQUEST"  
      Device will respond with a MQTT message such as defined with "IP/REPLY/<deviceID>" with the IP address in the payload  
 
