@@ -9,7 +9,7 @@
 
 - Device will respond to:  
     1. MQTT message  
-    2. onboard toggle  
+    2. Onboard toggle  
     3. GPIO-14 switch if connected  
 
 - WiFi or MQTT drop outs are handled automatically
