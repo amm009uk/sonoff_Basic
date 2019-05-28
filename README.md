@@ -67,7 +67,7 @@ To get the device IP address you have the following options:
 ## Credits
 I am simply reusing other peoples amazing work for instance the following libraries:  
   - [PubSubClient](https://github.com/knolleary/pubsubclient)  
-  - [WifiManager](https://github.com/tzapu/WiFiManager)  (You must the dev version)
+  - [WifiManager](https://github.com/tzapu/WiFiManager)  ***(You must the dev version)***
   - [ArduinoJson](https://github.com/bblanchon/ArduinoJson)  
 
 AND OF COURSE the many examples on github  
