@@ -18,11 +18,12 @@ char mqtt_user[10]        = "         ";
 char mqtt_password[10]    = "         ";
 char mqtt_inTopic[30]     = "                            ";
 char mqtt_outTopic[30]    = "                            ";
-long lastReconnectAttempt = 0.0;
+long lastReconnectAttempt = 0;
+long now;                                                            // Hold current millisecs device has been running
 
 int state                 = 0;                                       // Initial state of power
 boolean btnState          = false;                                   // Hold current state of relay
-long now;                                                            // Hold current time
+
 /* ------------------------------------------ Start of code ------------------------------------------*/
 
 void setup() {
@@ -86,7 +87,6 @@ void setup() {
   }
 
   mDNS.addService("sonoff", "tcp", 80);                              // Add service availability
-  mDNS.addService("telnet", "tcp", 23);                              // Advertise Telnet
 
   httpServer.onNotFound(handleNotFound);
 	httpServer.on("/",             handleRoot);
@@ -118,7 +118,13 @@ void setup() {
 		digitalWrite(RELAY_PIN, LOW);
 	}
 
+  // Require both of these statements to disable rogue AP
+	WiFi.softAPdisconnect (true);
+	WiFi.mode(WIFI_STA);
+
   delay(10);
+
+  MQTTconnect();                                                     // Initial MQTT connection
 
   #ifdef SERIAL_DEBUG
   debugln(F("************ Setup() finished *************"));
@@ -186,14 +192,9 @@ void relayOff() {                                                    // Toggle r
 
 
 void reboot() {
-
-  #ifdef SERIAL_DEBUG
-  debugln("Running reboot()");
-  #endif
-
+//  ESP.reset();
   ESP.restart();
   delay(1000);
-  
 } //reboot()
 
 
@@ -206,7 +207,7 @@ void loop() {
   //
   if ((WiFi.status() == WL_CONNECTED) && !MQTTclient.connected()) {
     now = millis();
-    if ( (now - lastReconnectAttempt) > 15000) {                     // Attempt MQTT conncection if we tried over 5 secs ago
+    if ( (now - lastReconnectAttempt) > MQTT_DELAY_RECONNECT) {      // Attempt MQTT conncection if we tried over 5 secs ago
       lastReconnectAttempt = now;
       // Attempt to reconnect MQTT
       if (MQTTconnect()) {

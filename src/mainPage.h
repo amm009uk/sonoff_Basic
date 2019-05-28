@@ -9,14 +9,14 @@ const char mainPage[] PROGMEM = R"=====(
 <table border="0" width="400" align="center">
 <tr>
 <td>
-<h2>sonoff Configuration - <label>version</label>{{_version}}</h2>
+<h2>sonoff - <label>version</label>{{_version}}</h2>
 <form action='/saveChanges' method='POST' target="_self">
 <fieldset>
 <legend><h4>&nbsp;Device Details&nbsp;</h4></legend>
 <table>
 <tr>
 <td><label>Device ID</label></td>
-<td><input type="text" name="deviceID" size="30" title="A Unique ID to help you find device with mDNS" value={{_deviceID}}></td>
+<td><input type="text" name="deviceID" size="30" title="A Unique ID to help you find device" value={{_deviceID}}></td>
 </tr>
 </table>
 </fieldset>

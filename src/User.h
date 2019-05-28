@@ -18,6 +18,7 @@
 #define TOGGLE_PIN					  00																		 // On board button
 #define EXT_PIN   					  14																		 // GPIO14 external switch
 
+#define MQTT_DELAY_RECONNECT  10000                                  // Delay between MQTT reconnects
 #define WWW_USER              "admin"                                // User for web page
 #define WWW_PASSWD            "esp8266ex"                            // Password for web page
 #define CONFIGFILE            "/config.json"                         // Configuration file holding various values

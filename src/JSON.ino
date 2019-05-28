@@ -29,7 +29,7 @@ bool loadConfig() {                                                  // Load JSO
 	DynamicJsonDocument doc(bufferSize);
 	DeserializationError error = deserializeJson(doc, buf.get());
 	if (error) {
-		debug("Error in Parsing JSON: "); debugln(error.c_str());
+		debug(F("Error in Parsing JSON: ")); debugln(error.c_str());
 		configFile.close();
   	return false;
 	}

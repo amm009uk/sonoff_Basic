@@ -1,9 +1,8 @@
 void handleNotFound() {
 
   #ifdef SERIAL_DEBUG
-	debugln(F("Bad URL!!!"));
+	debugln(F("Running handleNotFound()"));
   #endif
-
   httpServer.send(404, "text/plain", "404: Not found");
 
 } // handleNotFound()
@@ -11,6 +10,10 @@ void handleNotFound() {
 
 void handleRoot() {                                                  // Send the main page
 
+  #ifdef SERIAL_DEBUG
+  debugln(F("Running handleRoot()"));
+  #endif
+  
   if(!httpServer.authenticate(WWW_USER, WWW_PASSWD)) {               // Check user + password
     return httpServer.requestAuthentication();                       // Request user + password
   }
@@ -28,7 +31,6 @@ void handleRoot() {                                                  // Send the
   debug(F("....MQTT outTopic:  ")); debugln(mqtt_outTopic);
   #endif
 
-		
   String page;
   page += FPSTR(mainPage);
   
@@ -59,12 +61,15 @@ void handleRoot() {                                                  // Send the
 
 void handlesaveChanges() {
 
+	#ifdef SERIAL_DEBUG
+  debugln(F("Saving changes..."));
+	#endif
+	
   if (httpServer.args() !=  8) {
-    #ifdef SERIAL_DEBUGX
+    #ifdef SERIAL_DEBUG
     debug(F("Wrong number of args received from HTTP POST: ")); debugln(String(httpServer.args()));
 	  for ( uint8_t i = 0; i < httpServer.args(); i++ ) {
-  	  debug((String) i);
-  	  debugln(httpServer.arg(i).c_str());
+  	  debug((String) i); debug("  ");  debugln(httpServer.arg(i).c_str());
   	}
     #endif
   	return;
