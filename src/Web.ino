@@ -93,10 +93,11 @@ void handlesaveChanges() {
 
 void handleWiFiReset() {                                             // Wipe WiFi settings
 
-	wifiManager.resetSettings();                                       // Wipes out previously saved WiFi settings
+	httpServer.send(200, "text/plain", "WiFi Settings erased and device is rebooting \n\n*** You must reconfigure its Access Point ***");
+  delay(100);
+  
+  wifiManager.resetSettings();                                       // Wipes out previously saved WiFi settings
 	
-	httpServer.send(200, "text/plain", "WiFi Settings erased and device is rebooting...");
-  delay(50);
 	reboot();
 	
 } // handleWiFiReset()

@@ -1,4 +1,4 @@
-//#define SERIAL_DEBUG                                                 // Uncomment to enable serial debug output
+#define SERIAL_DEBUG                                                 // Uncomment to enable serial debug output
 //#define WIPE_SPIFFS                                                  // Uncomment to wipe data (does not include WiFi)
 
 #include <FS.h>                                                      // SPIFFS support
@@ -28,10 +28,10 @@
 //
 // Following values are used if no config file is found
 //
-#define NEW_deviceID					"NEW_something"
+#define NEW_deviceID					"NEW-sonoff"
 #define NEW_mqtt_server       "0.0.0.0"
 #define NEW_mqtt_port         1883
 #define NEW_mqtt_user         "user"
 #define NEW_mqtt_password     "password"
-#define NEW_mqtt_inTopic      "cmnd/Power/NEW_something"
-#define NEW_mqtt_outTopic     "stat/Power/NEW_something"
+#define NEW_mqtt_inTopic      "cmnd/Power/NEW-sonoff"
+#define NEW_mqtt_outTopic     "stat/Power/NEW-sonoff"

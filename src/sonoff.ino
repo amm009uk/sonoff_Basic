@@ -119,8 +119,8 @@ void setup() {
 	}
 
   // Require both of these statements to disable rogue AP
-	WiFi.softAPdisconnect (true);
-	WiFi.mode(WIFI_STA);
+//	WiFi.softAPdisconnect (true);
+//	WiFi.mode(WIFI_STA);
 
   delay(10);
 
@@ -206,6 +206,12 @@ void loop() {
   // If theres no WiFi that will be handled by WiFiManager
   //
   if ((WiFi.status() == WL_CONNECTED) && !MQTTclient.connected()) {
+    
+    // Require both of these statements to disable rogue AP
+    WiFi.mode(WIFI_STA);
+    WiFi.softAPdisconnect (true);
+    delay(50);
+    
     now = millis();
     if ( (now - lastReconnectAttempt) > MQTT_DELAY_RECONNECT) {      // Attempt MQTT conncection if we tried over 5 secs ago
       lastReconnectAttempt = now;
